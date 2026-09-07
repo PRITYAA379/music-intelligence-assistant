@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'Sonora | AI Music Assistant',
+  description: 'AI-powered music analysis and one-shot sound generation. Analyze track key, BPM, and scale. Create professional drums, FX, and melodic sounds.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -26,11 +26,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  colorScheme: 'dark',
+  themeColor: [{ media: '(prefers-color-scheme: dark)', color: '#0a0a0a' }],
 }
 
 export default function RootLayout({
