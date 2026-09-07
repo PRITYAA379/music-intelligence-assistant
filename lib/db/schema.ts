@@ -1,0 +1,16 @@
+import { pgTable, text, timestamp, boolean, integer, jsonb, unique } from 'drizzle-orm/pg-core'
+
+export const user = pgTable('user', {
+  id: text('id').primaryKey(), name: text('name').notNull(), email: text('email').notNull().unique(), emailVerified: boolean('emailVerified').notNull().default(false), image: text('image'), createdAt: timestamp('createdAt').notNull().defaultNow(), updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+})
+export const session = pgTable('session', {
+  id: text('id').primaryKey(), expiresAt: timestamp('expiresAt').notNull(), token: text('token').notNull().unique(), createdAt: timestamp('createdAt').notNull().defaultNow(), updatedAt: timestamp('updatedAt').notNull().defaultNow(), ipAddress: text('ipAddress'), userAgent: text('userAgent'), userId: text('userId').notNull(),
+})
+export const account = pgTable('account', {
+  id: text('id').primaryKey(), accountId: text('accountId').notNull(), providerId: text('providerId').notNull(), userId: text('userId').notNull(), accessToken: text('accessToken'), refreshToken: text('refreshToken'), idToken: text('idToken'), accessTokenExpiresAt: timestamp('accessTokenExpiresAt'), refreshTokenExpiresAt: timestamp('refreshTokenExpiresAt'), scope: text('scope'), password: text('password'), createdAt: timestamp('createdAt').notNull().defaultNow(), updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+})
+export const verification = pgTable('verification', { id: text('id').primaryKey(), identifier: text('identifier').notNull(), value: text('value').notNull(), expiresAt: timestamp('expiresAt').notNull(), createdAt: timestamp('createdAt').defaultNow(), updatedAt: timestamp('updatedAt').defaultNow() })
+export const projects = pgTable('projects', { id: text('id').primaryKey(), userId: text('userId').notNull(), name: text('name').notNull(), sourcePathname: text('sourcePathname'), sourceFilename: text('sourceFilename'), analysis: jsonb('analysis'), createdAt: timestamp('createdAt').notNull().defaultNow(), updatedAt: timestamp('updatedAt').notNull().defaultNow() })
+export const generations = pgTable('generations', { id: text('id').primaryKey(), userId: text('userId').notNull(), projectId: text('projectId'), prompt: text('prompt').notNull(), category: text('category').notNull(), context: text('context'), pathname: text('pathname'), status: text('status').notNull().default('completed'), createdAt: timestamp('createdAt').notNull().defaultNow() })
+export const subscriptions = pgTable('subscriptions', { id: text('id').primaryKey(), userId: text('userId').notNull().unique(), stripeCustomerId: text('stripeCustomerId').unique(), stripeSubscriptionId: text('stripeSubscriptionId').unique(), status: text('status').notNull().default('inactive'), currentPeriodEnd: timestamp('currentPeriodEnd'), createdAt: timestamp('createdAt').notNull().defaultNow(), updatedAt: timestamp('updatedAt').notNull().defaultNow() })
+export const usage = pgTable('usage', { id: text('id').primaryKey(), userId: text('userId').notNull(), period: text('period').notNull(), analysisCount: integer('analysisCount').notNull().default(0), generationCount: integer('generationCount').notNull().default(0), createdAt: timestamp('createdAt').notNull().defaultNow(), updatedAt: timestamp('updatedAt').notNull().defaultNow() }, (table) => [unique().on(table.userId, table.period)])
